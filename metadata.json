@@ -2,7 +2,7 @@
   "name": "Todoit",
   "description": "Simple todo list, to keep you focused on your daily tasks",
   "uuid": "todoit@wassimbj.github.io",
-  "shell-version": ["45", "46", "47", "48", "49"],
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
   "url": "https://github.com/wassimbj/todoit-gnome",
   "settings-schema": "org.gnome.shell.extensions.todoit",
   "support_url": "https://buymeacoffee.com/wassimbj2"
