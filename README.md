@@ -12,6 +12,7 @@
 - Toggle tasks progress
 - Toggle with a shortcut (Alt+Shift+Space)
 - Focus on a specific task (moves the task to the top and highlight it with a bg color)
+- Reorder tasks with drag-and-drop (grip handle on each row)
 
 ## Support
 Todoit is built with the latest gnome API, which uses ESM to import the needed libraries.
