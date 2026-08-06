@@ -40,6 +40,13 @@
   display: flex;
   align-items: center;
   border-radius: 5px;
+  width: 100%;
+}
+
+/* Full-width row so the drag handle lines up on the extreme right */
+.todo-item-layout {
+  spacing: 4px;
+  width: 100%;
 }
 
 .focus-btn {
@@ -93,4 +100,42 @@
 
 .focused-task {
   background-color: rgba(255, 69, 0, 0.2);
+}
+
+/* Drag handle ("=") — always visible, extreme right, aligned across rows */
+.drag-btn {
+  padding: 6px 10px;
+  border-radius: 50px;
+  width: auto;
+  min-width: 28px;
+}
+
+.drag-icon {
+  color: #aaa;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.drag-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.drag-btn:hover .drag-icon {
+  color: #eee;
+}
+
+.drag-btn:active {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Drop target highlight while reordering */
+.item.drag-over {
+  background: rgba(255, 255, 255, 0.18);
+  outline: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* Source row while an item is being dragged */
+.item.dragging {
+  opacity: 0.45;
 }

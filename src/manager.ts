@@ -63,6 +63,28 @@ export class TodoListManager {
     }
     this.GSettings.set_strv(TODOS, todos);
   }
+
+  /**
+   * Move a todo from one index to another, persisting array order to GSettings.
+   */
+  reorder(fromIndex: number, toIndex: number) {
+    const todos = this.get();
+    if (isEmpty(todos)) {
+      return;
+    }
+    if (
+      fromIndex < 0 ||
+      toIndex < 0 ||
+      fromIndex >= todos.length ||
+      toIndex >= todos.length ||
+      fromIndex === toIndex
+    ) {
+      return;
+    }
+    const [item] = todos.splice(fromIndex, 1);
+    todos.splice(toIndex, 0, item);
+    this.GSettings.set_strv(TODOS, todos);
+  }
 }
 
 export interface Task {
