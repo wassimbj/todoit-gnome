@@ -6,7 +6,7 @@ start:
 	dbus-run-session -- sh -c 'gnome-extensions enable "$(EXTENSION_UUID)" && exec gnome-shell --wayland --devkit'
 
 # build, install, and test the distributable archive
-test-pack:
+dev: clean_build
 	sh build.sh test
 	gnome-extensions install --force todoit-test@wassimbj.github.io.zip
 	$(MAKE) start EXTENSION_UUID=todoit-test@wassimbj.github.io
@@ -24,10 +24,6 @@ build:
 
 clean_build:
 	rm build *.zip *.js -rf
-
-# run build
-.PHONY: run
-dev: clean_build build start
 
 # pack the production build for distribution
 pack:
