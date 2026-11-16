@@ -1,6 +1,8 @@
 node_modules
 dist
 build
+build-test
+todoit-test@wassimbj.github.io.zip
 extension.js
 manager.js
 utils.js

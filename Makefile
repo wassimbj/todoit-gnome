@@ -1,6 +1,15 @@
-.PHONY: start
+.PHONY: start test-pack pack
+EXTENSION_UUID ?= todoit@wassimbj.github.io
+
 start:
-	dbus-run-session -- gnome-shell --nested --wayland
+	@test -x /usr/libexec/mutter-devkit || { echo "mutter-devkit is required (Fedora: sudo dnf install mutter-devkit)"; exit 1; }
+	dbus-run-session -- sh -c 'gnome-extensions enable "$(EXTENSION_UUID)" && exec gnome-shell --wayland --devkit'
+
+# build, install, and test the distributable archive
+test-pack:
+	sh build.sh test
+	gnome-extensions install --force todoit-test@wassimbj.github.io.zip
+	$(MAKE) start EXTENSION_UUID=todoit-test@wassimbj.github.io
 
 # build schema
 .PHONY: schemas
@@ -20,9 +29,6 @@ clean_build:
 .PHONY: run
 dev: clean_build build start
 
-# pack for distribution
-.PHONY: pack
+# pack the production build for distribution
 pack:
-	rm build -rf
-	rm *.zip -rf
-	sh build.sh
+	sh build.sh production
