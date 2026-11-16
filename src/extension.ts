@@ -50,12 +50,26 @@ export default class TodoListExtension extends Extension {
   input?: St.Entry | null;
   button!: PanelMenu.Button | null;
   _dragOverItem: PopupMenu.PopupMenuItem | null = null;
+  /** True while a todo drag is in progress (rebuilds are deferred until drag-end) */
+  _dndActive = false;
   /** Rebuild list after DND finishes (avoid destroying actors mid-drop) */
   _pendingRepopulate = false;
 
   enable() {
     this.button = new PanelMenu.Button(0.0, this.metadata.name, false);
     this._manager = new TodoListManager(this);
+    // Live refresh on external "todos" changes. Use the manager's instance:
+    // getSettings() returns a fresh object per call; the primed read makes it emit.
+    this._manager.GSettings.connect("changed::todos", () => {
+      if (this._dndActive) {
+        // Defer the rebuild until drag-end so source actors stay alive
+        this._pendingRepopulate = true;
+        return;
+      }
+      this._populate();
+      this._refreshTodosButtonText();
+    });
+    this._manager.GSettings.get_strv("todos");
     const totalTodos = this._manager.getTotalUndone();
 
     this.buttonText = new St.Label({
@@ -336,11 +350,13 @@ export default class TodoListExtension extends Extension {
     });
     draggable.connect("drag-begin", () => {
       item.add_style_class_name("dragging");
+      this._dndActive = true;
       return true;
     });
     draggable.connect("drag-end", () => {
       // Source row is still alive here (UI rebuild is deferred until after drop)
       item.remove_style_class_name("dragging");
+      this._dndActive = false;
       this._clearDragOver();
       if (this._pendingRepopulate) {
         this._pendingRepopulate = false;
